@@ -1,12 +1,13 @@
 package com.luv2code.springdemo.aspect;
 
-import java.util.logging.Logger;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class CRMLoggingAspect {
-    private final Logger LOGGER = Logger.getLogger(getClass().getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(CRMLoggingAspect.class);
 
     @Pointcut("execution(* com.luv2code.springdemo.controller.*.*(..))")
     private void forControllerPackage() {
@@ -40,12 +41,12 @@ public class CRMLoggingAspect {
     @Before("forAppFlow()")
     public void before(JoinPoint theJoinPoint) {
         String theMethod = theJoinPoint.getSignature().toShortString();
-        LOGGER.info("=====>> in @Before: calling method: " + theMethod);
+        LOGGER.info("{} in @Before: calling method: ", theMethod);
 
-        Object obj[] = theJoinPoint.getArgs();
+        Object[] obj = theJoinPoint.getArgs();
 
         for (Object tempArg : obj) {
-            LOGGER.info("=====>> argument: " + tempArg);
+            LOGGER.info("{} argument: ", tempArg);
         }
     }
 
@@ -56,8 +57,8 @@ public class CRMLoggingAspect {
 
     public void afterReturning(JoinPoint theJoinPoint, Object theResult) {
         String theMethod = theJoinPoint.getSignature().toShortString();
-        LOGGER.info("=====>> in @AfterReturning: from method: " + theMethod);
+        LOGGER.info("{} in @AfterReturning: from method: ", theMethod);
 
-        LOGGER.info("=====>> result: " + theResult);
+        LOGGER.info("{} result: ", theResult);
     }
 }
