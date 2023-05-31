@@ -10,14 +10,12 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
 /**
- *
  * @author kalin
  */
 @Aspect
 @Component
 public class CRMLoggingAspect {
-
-    private Logger myLogger = Logger.getLogger(getClass().getName());
+    private final Logger LOGGER = Logger.getLogger(getClass().getName());
 
     @Pointcut("execution(* com.luv2code.springdemo.controller.*.*(..))")
     private void forControllerPackage() {
@@ -41,16 +39,14 @@ public class CRMLoggingAspect {
 
     @Before("forAppFlow()")
     public void before(JoinPoint theJoinPoint) {
-
         String theMethod = theJoinPoint.getSignature().toShortString();
-        myLogger.info("=====>> in @Before: calling method: " + theMethod);
+        LOGGER.info("=====>> in @Before: calling method: " + theMethod);
 
         Object obj[] = theJoinPoint.getArgs();
 
         for (Object tempArg : obj) {
-            myLogger.info("=====>> argument: " + tempArg);
+            LOGGER.info("=====>> argument: " + tempArg);
         }
-
     }
 
     @AfterReturning(
@@ -59,11 +55,9 @@ public class CRMLoggingAspect {
     )
 
     public void afterReturning(JoinPoint theJoinPoint, Object theResult) {
-
         String theMethod = theJoinPoint.getSignature().toShortString();
-        myLogger.info("=====>> in @AfterReturning: from method: " + theMethod);
+        LOGGER.info("=====>> in @AfterReturning: from method: " + theMethod);
 
-        myLogger.info("=====>> result: " + theResult);
-
+        LOGGER.info("=====>> result: " + theResult);
     }
 }
